@@ -86,6 +86,8 @@ def calc_correlations_with_binding_approach():
 
     print("Збережено результати кореляції та p-value!")
 
+    return silpo_shops_data_with_metrics, corr_results
+
 
 # # Виклик основної функції
 # if __name__ == "__main__":
