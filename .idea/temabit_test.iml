@@ -10,7 +10,7 @@
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">
       <list>
-        <option value="$MODULE_DIR$/my_project/correlation" />
+        <option value="$MODULE_DIR$/my_project/calc_correlations" />
       </list>
     </option>
   </component>

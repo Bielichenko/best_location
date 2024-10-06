@@ -2,29 +2,29 @@ import pandas as pd
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
-from my_project.global_data import population_data, silpo_stores_data
+from my_project.global_data import populations_data, silpo_shops_data
 from my_project.functions import calculate_pop_rel_weight_by_dist
 from my_project.functions import get_competitors_shops
-# from my_project.visualizations import show_best_location
+# from my_project.show_visualizations import show_best_location
 
 
 # Функція для завантаження та підготовки даних
 def load_and_prepare_data():
     # Приведення даних до числових значень і перетворення в списки координат
-    population_data['lat'] = pd.to_numeric(population_data['lat'], errors='coerce')
-    population_data['lon'] = pd.to_numeric(population_data['lon'], errors='coerce')
-    silpo_stores_data['lat'] = pd.to_numeric(silpo_stores_data['lat'], errors='coerce')
-    silpo_stores_data['long'] = pd.to_numeric(silpo_stores_data['long'], errors='coerce')
+    populations_data['lat'] = pd.to_numeric(populations_data['lat'], errors='coerce')
+    populations_data['lon'] = pd.to_numeric(populations_data['lon'], errors='coerce')
+    silpo_shops_data['lat'] = pd.to_numeric(silpo_shops_data['lat'], errors='coerce')
+    silpo_shops_data['long'] = pd.to_numeric(silpo_shops_data['long'], errors='coerce')
 
     other_competitors_shops = get_competitors_shops()
 
     # Фільтрація рядків без координат
-    population_data_filtered = population_data.dropna(subset=['lat', 'lon'])
+    population_data_filtered = populations_data.dropna(subset=['lat', 'lon'])
     population_coords = population_data_filtered[['lat', 'lon']].values
     metric_population = population_data_filtered['metric population'].values
 
     # Фільтруємо дані про магазини
-    silpo_stores_data_filtered = silpo_stores_data.dropna(subset=['lat', 'long'])
+    silpo_stores_data_filtered = silpo_shops_data.dropna(subset=['lat', 'long'])
     silpo_stores_coords = silpo_stores_data_filtered[['lat', 'long']].values
     silpo_stores_coords_with_corp_name = [["Silpo", lat, lon,] for lat, lon in silpo_stores_coords]
 

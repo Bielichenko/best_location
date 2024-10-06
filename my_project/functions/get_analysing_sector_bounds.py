@@ -4,7 +4,7 @@ def get_analysing_sector_bounds(population_data, indent_km=3):
     Обчислює кордони сектора на основі координат популяції та додає відступи, щоб об'єкти не знаходились занадто близько до країв.
 
     Parameters:
-    population_data (pd.DataFrame): Дані про популяцію з колонками 'lat' та 'lon'.
+    populations_data (pd.DataFrame): Дані про популяцію з колонками 'lat' та 'lon'.
     indent_km (float): Відступ у кілометрах (за замовчуванням 3 км).
 
     Returns:

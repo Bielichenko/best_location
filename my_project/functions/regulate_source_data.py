@@ -10,11 +10,11 @@ def regulate_source_data(population_data, sector_coords):
     Видаляє популяцію, яка знаходиться в заданому секторі, за допомогою геометричних операцій.
 
     Parameters:
-    population_data: DataFrame - дані про популяцію
+    populations_data: DataFrame - дані про популяцію
     sector_coords: tuple - координати сектору у форматі (lat_min, lat_max, lon_min, lon_max)
 
     Returns:
-    population_data: DataFrame - оновлені дані про популяцію
+    populations_data: DataFrame - оновлені дані про популяцію
     """
 
     lat_min, lat_max, lon_min, lon_max = sector_coords
