@@ -3,3 +3,6 @@ from .get_analysing_area_bounds import get_analysing_area_bounds
 from .regulate_source_data import regulate_source_data
 from .calculate_pop_rel_weight_by_dist import calculate_pop_rel_weight_by_dist
 from .get_competitors_shops import get_competitors_shops
+from .get_haversine_dist_in_km import get_haversine_dist_in_km
+from .calculate_azimuth import calculate_azimuth
+from .get_sector import get_sector

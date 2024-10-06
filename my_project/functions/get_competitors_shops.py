@@ -50,7 +50,5 @@ def get_competitors_shops():
     # print('competitors_stores', len(competitors_stores))
     # print(competitors_stores, 'competitors_stores')
 
-    print('get_competitors_shops competitors_stores :', competitors_stores)
-
     return competitors_stores
 # print(len(get_competitors_shops()))

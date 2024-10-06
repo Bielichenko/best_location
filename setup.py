@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'activate=my_project.main:main',  # Команда 'start', яка викликає функцію main з файлу calc_correlations_with_sectors_approach.py
+            'activate=my_project.main:main',  # Команда 'start', яка викликає функцію main з файлу calc_correlations_with_areas_approach.py
         ]
     },
     author='Ваше ім’я',
