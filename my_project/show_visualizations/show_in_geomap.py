@@ -4,19 +4,18 @@ import geopandas as gpd
 import numpy as np
 from shapely.geometry import box, Point
 from my_project.global_data import populations_data, all_population_data
-from my_project.functions import get_analysing_area_bounds
+from my_project.functions import get_analysing_map_bounds
 import webbrowser
 import tempfile
 import branca
 
-def show_in_geomap(is_need_to_show_store_metric = False, star_coords = None, competitors_stores = []):
-    print('competitors_stores', competitors_stores)
+def show_in_geomap(is_need_to_show_store_metric = False, best_location_coords = None, competitors_stores = []):
     """
-    Візуалізує популяційні метрики у вигляді квадратної сітки на Folium і відображає спеціальну точку (зірочку).
+    Візуалізує популяційні метрики у вигляді квадратної сітки на Folium і відображає найкращу локацію (зірочку).
     Додає на карту магазини "Сільпо" та конкурентів із використанням простих маркерів.
 
     Args:
-        star_coords (tuple): Координати для відображення зірочки (широта, довгота).
+        best_location_coords (tuple): Координати для відображення найкращої локації (широта, довгота).
         silpo_shops_data (pd.DataFrame): Дані про магазини "Сільпо" з колонками "Store", "lat", "long".
         competitors_stores (list): Лист з підлистів, кожен підлист містить [shop_name, lat, lon].
 
@@ -29,7 +28,7 @@ def show_in_geomap(is_need_to_show_store_metric = False, star_coords = None, com
     gdf_population = gpd.GeoDataFrame(populations_data, geometry='geometry')
 
     # Визначаємо межі для розбиття на квадрати
-    xmin, ymin, xmax, ymax = get_analysing_area_bounds(all_population_data)
+    xmin, ymin, xmax, ymax = get_analysing_map_bounds(all_population_data)
 
     # Розмір квадрата (0.5 км ≈ 0.0045 градусів широти і довготи)
     grid_size = 0.0045
@@ -88,9 +87,9 @@ def show_in_geomap(is_need_to_show_store_metric = False, star_coords = None, com
         ).add_to(folium_map)
 
     # Додаємо зірочку на карту
-    if star_coords:
+    if best_location_coords:
         folium.Marker(
-            location=[float(star_coords[0]), float(star_coords[1])],
+            location=[float(best_location_coords[0]), float(best_location_coords[1])],
             popup="Optimal Location",
             icon=folium.Icon(icon='star', color='orange')
         ).add_to(folium_map)
