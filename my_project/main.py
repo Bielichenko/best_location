@@ -11,13 +11,13 @@ is_need_to_add_competitors = True
 
 def main():
     print("Алгоритм успішно активовано!")
-    # show_in_geomap(True)
-    # calc_correlations_with_binding_approach()
+    show_in_geomap(True)
+    calc_correlations_with_binding_approach()
     competitors_shops = get_competitors_shops()
-    # calc_correlations_with_areas_approach(competitors_shops)
-    # show_in_tableau()
+    calc_correlations_with_areas_approach(competitors_shops)
+    show_in_tableau()
     best_location = find_best_locations(competitors_shops, is_need_to_add_competitors)
-    # show_in_geomap(False, best_location[1], competitors_shops)
+    show_in_geomap(False, best_location[1], competitors_shops)
 
 # Ви також можете включити ваш основний код для запуску
 if __name__ == "__main__":
