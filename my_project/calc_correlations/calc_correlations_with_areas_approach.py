@@ -129,9 +129,9 @@ def calc_correlations_with_areas_approach(competitors_shops, radius_km=1, n_sect
         n_sectors
     )
 
-    silpo_shops_data_with_areas_metrics = silpo_shops_data.copy()
 
     # Додаємо нові метрики до DataFrame
+    silpo_shops_data_with_areas_metrics = silpo_shops_data.copy()
     silpo_shops_data_with_areas_metrics['shops_density_in_areas'] = stores_density_in_areas
     silpo_shops_data_with_areas_metrics['pops_density_in_areas'] = pops_density_in_areas
     silpo_shops_data_with_areas_metrics['pops_metric_sum_in_areas'] = pops_metric_sum_in_areas

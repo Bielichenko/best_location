@@ -31,7 +31,7 @@ def assign_populations_to_shop():
 
 # Функція для обчислення метрик магазинів
 def calculate_shops_metrics(populations_data_assigned_with_shops):
-    silpo_shops_data_with_metrics = silpo_shops_data
+    silpo_shops_data_with_metrics = silpo_shops_data.copy()
 
     # Створюємо порожні колонки для результатів
     silpo_shops_data_with_metrics['avg_distance_to_pops'] = pd.NA
