@@ -3,17 +3,29 @@ import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
 from my_project.global_data import populations_data, silpo_shops_data, all_population_data
-from my_project.functions import calculate_pop_rel_weight_by_dist, get_analysing_map_bounds
+from my_project.functions import calculate_pop_rel_weight_by_dist, get_analysing_map_bounds, get_formatted_number
 from my_project.functions import get_competitors_shops
 # from my_project.show_visualizations import show_best_location
 
 
 # Функція для збереження результатів у Excel
-def save_best_locations_to_excel(best_locations, output_path):
-    best_locations_df = pd.DataFrame(best_locations, columns=['Total Weighted Demand', 'Coords'])
+def format_and_save_best_locations_to_excel(best_locations, output_path):
+    formatted_locations = [
+        (
+            get_formatted_number(score, 2),
+            (get_formatted_number(coords[0], 3), get_formatted_number(coords[1], 3))
+         )
+        for score, coords in best_locations
+    ]
+
+    # Створюємо DataFrame з форматованих даних
+    best_locations_df = pd.DataFrame(formatted_locations, columns=['Score', 'Coords'])
+
+    # Зберігаємо в Excel
     best_locations_df.to_excel(output_path + 'new_store_best_locations.xlsx', index=False)
+
     print(
-        'Ура! Файл з найкращими координатами для нових локацій успішно записан! '
+        'Ура! Файл з найкращими координатами для нових локацій успішно записано! '
         r'Шлях: temabit_test\my_project\output_result_data\new_store_best_locations'
     )
 
@@ -149,12 +161,8 @@ def find_best_locations(competitors_shops, is_need_to_add_competitors=True):
 
     # Збереження результатів
     output_path = './my_project/output_result_data/new_store_best_locations/'
-    save_best_locations_to_excel(best_locations, output_path)
+    format_and_save_best_locations_to_excel(best_locations, output_path)
 
     # Найкраща локація буде відображена на гео мапі!
     return best_locations[0]
 
-
-# Виклик основної функції
-if __name__ == "__main__":
-    find_best_locations()

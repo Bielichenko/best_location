@@ -88,7 +88,3 @@ def calc_correlations_with_binding_approach():
 
     return silpo_shops_data_with_metrics, corr_results
 
-
-# # Виклик основної функції
-# if __name__ == "__main__":
-#     calc_correlations_with_binding_approach()
