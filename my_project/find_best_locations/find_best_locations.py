@@ -18,38 +18,36 @@ def save_best_locations_to_excel(best_locations, output_path):
     )
 
 
-# Функція для обчислення загального зваженого попиту
+# Функція для обчислення рахунку для кожної локації
 def calculate_total_location_score(potential_location_coord, pops_coords, other_shops_effects_on_each_pop, alpha):
+    # Знаходимо відстань від локації до всіх популяцій
     lat_diff = (pops_coords[:, 0] - potential_location_coord[0]) * 111
     lon_diff = (pops_coords[:, 1] - potential_location_coord[1]) * 111 * np.cos(np.radians(pops_coords[:, 0]))
     distances_to_store = np.sqrt(lat_diff ** 2 + lon_diff ** 2)
 
+    # Вираховуємо відносну "вагу" популяцій для поточної локації, враховуючи відстань до них
     pops_rel_weight_by_dist_factor = calculate_pop_rel_weight_by_dist(distances_to_store, alpha)
+    # Від вагів популяцій з накоаденим штрафом за відстань додатково віднімаємо порахований раніше вплив інших магазинів
     pops_rel_weight_by_dist_and_other_shops_factor = pops_rel_weight_by_dist_factor * (1 - other_shops_effects_on_each_pop)
 
+    # Повертаємо суму вагів по популяціям, це і є відносним рахунком локації (чим більше - тим краще)
     return np.sum(pops_rel_weight_by_dist_and_other_shops_factor)
 
 # Використовуємо попередньо обчислену матрицю відстаней для розрахунку впливу конкурентів
-def calculate_other_shops_effect(distance_matrix, silpo_and_other_corps_shops, alpha=1):
-    """
-    distance_matrix: матриця відстаней
-    silpo_and_other_corps_shops: список конкурентів з назвою магазину, широтою та довготою
-    alpha: коефіцієнт штрафу за відстань
-    """
+def calculate_other_shops_effect(distances_matrix, silpo_and_other_corps_shops, alpha=1):
+    # Обчислюємо базовий вплив для всіх магазинів (за допомогою альфи можна корегувати штраф за відстань)
+    other_shops_impact_matrix = calculate_pop_rel_weight_by_dist(distances_matrix, alpha)
 
-    # Обчислюємо базовий вплив для всіх магазинів
-    other_shops_impact_matrix = calculate_pop_rel_weight_by_dist(distance_matrix, alpha)
-
-    # В рамках розвитку мережі конкуренція з магазином зі своєї ж мережі наносить збиток і потенційно новому магазину і тому, що вже побудован, тому застосовується додатковий штраф:
+    # В рамках розвитку мережі, конкуренція з магазином зі своєї ж мережі наносить збиток і потенційно новому магазину і тому, що вже побудован, тому застосовується додатковий штраф для магазинів Сільпо:
     # Визначаємо, чи є магазин "Сільпо"
-    is_silpo = [shop[0] == "Silpo" for shop in silpo_and_other_corps_shops]  # Якщо назва магазину містить "Сільпо"
-    # Збільшуємо вплив для магазинів "Сільпо" за допомогою silpo_boost
-    other_shops_impact_matrix[:, is_silpo] *= 2  # Застосовуємо коефіцієнт до колонок, де магазини "Сільпо"
+    is_silpo = [shop[0] == "Silpo" for shop in silpo_and_other_corps_shops]
+    # Збільшуємо вплив для магазинів "Сільпо" за коєфіцінта 2
+    other_shops_impact_matrix[:, is_silpo] *= 2
 
     # Сумуємо впливи по всіх магазинах для кожної популяції
     pops_other_shops_total_impact = np.sum(other_shops_impact_matrix, axis=1)
 
-    # Нормалізуємо значення, якщо максимальний вплив більше за 1
+    # Нормалізуємо значення, якщо максимальний вплив більше за 1, таким чином виходить, що максимальний штраф для популяції є число 1
     max_impact = np.max(pops_other_shops_total_impact)
     if max_impact > 1:
         pops_other_shops_total_impact /= max_impact
@@ -57,7 +55,7 @@ def calculate_other_shops_effect(distance_matrix, silpo_and_other_corps_shops, a
     return pops_other_shops_total_impact
 
 
-# Функція для обчислення евклідових відстаней між всіма популяціями та конкурентами
+# Функція для обчислення евклідових відстаней між всіма популяціями та магазинами
 def calculate_distances_matrix(pops_coords, silpo_and_other_shops_coords):
     pops_coords_np_arr = np.array(pops_coords)
 
@@ -66,16 +64,16 @@ def calculate_distances_matrix(pops_coords, silpo_and_other_shops_coords):
         return np.zeros((len(pops_coords), 0))  # Матриця відстаней з нульовою кількістю колонок
 
     # Створюємо два масиви (широта і довгота) в одному циклі
-    shop_lat, shop_lon = np.array([
+    shops_lats, shops_lons = np.array([
         (coord[1], coord[2]) for coord in silpo_and_other_shops_coords
     ], dtype=float).T  # Транспонування для розділення на широти і довготи
 
     # Обчислення різниці в координатах. Для оптимізації розрахунку використовуються матричні операції
-    lat_diff = (pops_coords_np_arr[:, 0, np.newaxis] - shop_lat) * 111
-    lon_diff = (pops_coords_np_arr[:, 1, np.newaxis] - shop_lon) * 111 * np.cos(
+    lat_diff = (pops_coords_np_arr[:, 0, np.newaxis] - shops_lats) * 111
+    lon_diff = (pops_coords_np_arr[:, 1, np.newaxis] - shops_lons) * 111 * np.cos(
         np.radians(pops_coords_np_arr[:, 0, np.newaxis]))
 
-    # Обчислення Евклідової відстані
+    # Обчислення Евклідової відстані - отримуємо матрицю дистанцій від кожної популяції до кожного магазину
     distances_from_pops_to_shops_matrix = np.sqrt(lat_diff ** 2 + lon_diff ** 2)
 
     return distances_from_pops_to_shops_matrix
@@ -83,18 +81,24 @@ def calculate_distances_matrix(pops_coords, silpo_and_other_shops_coords):
 
 # Функція для пошуку оптимальних локацій
 def get_locations_with_best_score(pops_coords, silpo_and_other_shops_coords, alpha=1, step_size=0.001, max_workers=8):
+    # Встановлюємо межі карти на основі координат популяцій
     all_pops_coords = all_population_data[['lat', 'lon']].values
     x_min, x_max, y_min, y_max = get_analysing_map_bounds(all_pops_coords)
 
+    # Розраховуємо дистанції від популяцій до кожного магазину
     distances_from_pops_to_shops_matrix = calculate_distances_matrix(pops_coords, silpo_and_other_shops_coords)
+    # Розраховуємо ефект (штраф) який створюють інші магазини на популяції в залежності від дистанції між ними
     other_shops_effects_on_each_pop = calculate_other_shops_effect(distances_from_pops_to_shops_matrix, silpo_and_other_shops_coords, alpha)
 
+    # Для додаткової оптимізації використав асинхронність
     all_potential_locations_score = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_location = {}
+        # Перебираємо координати в межах доступної карти
         for y in np.arange(y_max, y_min, -step_size):
             for x in np.arange(x_min, x_max, step_size):
                 potential_location_coord = (x, y)
+                # Для кожної потенційної локації вираховуємо рахунок, що відображає привабливість кожної локації
                 future = executor.submit(calculate_total_location_score, potential_location_coord, pops_coords, other_shops_effects_on_each_pop, alpha)
                 future_to_location[future] = potential_location_coord
 
@@ -107,10 +111,12 @@ def get_locations_with_best_score(pops_coords, silpo_and_other_shops_coords, alp
                 print(f"Error in task: {e}")
 
     all_potential_locations_score_sorted = sorted(all_potential_locations_score, key=lambda x: x[0], reverse=True)
+
+    # Повертаємо топ 100
     return all_potential_locations_score_sorted[:100]
 
 # Функція для завантаження та підготовки даних
-def load_and_prepare_data(competitors_shops_prepared):
+def get_prepared_coords(competitors_shops_prepared):
     # Приведення даних до числових значень і перетворення в списки координат
     populations_data['lat'] = pd.to_numeric(populations_data['lat'], errors='coerce')
     populations_data['lon'] = pd.to_numeric(populations_data['lon'], errors='coerce')
@@ -136,7 +142,7 @@ def find_best_locations(competitors_shops, is_need_to_add_competitors=True):
     competitors_shops_prepared = competitors_shops if is_need_to_add_competitors else []
 
     # Завантаження і підготовка даних
-    pops_coords, silpo_and_other_shops_coords = load_and_prepare_data(competitors_shops_prepared)
+    pops_coords, silpo_and_other_shops_coords = get_prepared_coords(competitors_shops_prepared)
 
     # Пошук оптимальних локацій
     best_locations = get_locations_with_best_score(pops_coords, silpo_and_other_shops_coords, alpha=1, step_size=0.001, max_workers=os.cpu_count())
@@ -145,6 +151,7 @@ def find_best_locations(competitors_shops, is_need_to_add_competitors=True):
     output_path = './my_project/output_result_data/new_store_best_locations/'
     save_best_locations_to_excel(best_locations, output_path)
 
+    # Найкраща локація буде відображена на гео мапі!
     return best_locations[0]
 
 

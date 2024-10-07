@@ -13,9 +13,6 @@ def get_analysing_map_bounds(some_type_coords):
         # Перетворимо DataFrame на GeoDataFrame для візуалізації на карті
         gdf_population = gpd.GeoDataFrame(some_type_coords, geometry='geometry')
 
-        # # Визначимо межі для розбиття на квадрати
-        # xmin, ymin, xmax, ymax = gdf_population.total_bounds
-
         return gdf_population.total_bounds
 
     if isinstance(some_type_coords, np.ndarray):
