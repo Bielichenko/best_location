@@ -20,13 +20,14 @@ def main():
     competitors_shops = get_competitors_shops() if is_need_to_add_competitors else []
     calc_correlations_with_areas_approach(competitors_shops)
     show_in_tableau()
-    print('Результати кореляції візуалізовані в твоєму браузері!')
+    print("Результати кореляції візуалізовані в твоєму браузері!")
 
     best_location = find_best_locations(competitors_shops)
     show_in_geomap(False, best_location, competitors_shops)
-    print('Найкраща локація додана на гео мапу в твоєму браузері!')
+    print("Геомапа з найкращою локацією візуалізована в твоєму браузері!")
 
     print("Всі етапи алгоритму пройдені! Дякую за увагу!")
+
 
 if __name__ == "__main__":
     main()
