@@ -9,20 +9,7 @@ import webbrowser
 import tempfile
 import branca
 
-def show_in_geomap(is_need_to_show_store_metric = False, best_location_coords = None, competitors_stores = []):
-    """
-    Візуалізує популяційні метрики у вигляді квадратної сітки на Folium і відображає найкращу локацію (зірочку).
-    Додає на карту магазини "Сільпо" та конкурентів із використанням простих маркерів.
-
-    Args:
-        best_location_coords (tuple): Координати для відображення найкращої локації (широта, довгота).
-        silpo_shops_data (pd.DataFrame): Дані про магазини "Сільпо" з колонками "Store", "lat", "long".
-        competitors_stores (list): Лист з підлистів, кожен підлист містить [shop_name, lat, lon].
-
-    Returns:
-        None: Функція відображає карту в браузері.
-    """
-
+def show_in_geomap(is_need_to_show_store_and_pop_metric = False, best_location_coords = None, competitors_stores = []):
     # Перетворюємо populations_data на GeoDataFrame для використання методів GeoPandas
     populations_data['geometry'] = populations_data.apply(lambda row: Point(row['lon'], row['lat']), axis=1)
     gdf_population = gpd.GeoDataFrame(populations_data, geometry='geometry')
@@ -43,8 +30,12 @@ def show_in_geomap(is_need_to_show_store_metric = False, best_location_coords = 
 
     # Функція для обчислення кількості популяції для кожного квадрата
     def calculate_population_sum_in_square(square, population_data):
+        # В залежності від того чи треба враховувати метрику популяції, повертаємо або суму метрики або просто її кількість
         mask = population_data.within(square)
-        return population_data[mask]['metric population'].sum()
+        population_metric_sum = population_data[mask]['metric population'].sum()
+        population_metric_count = population_data[mask]['metric population'].count()
+
+        return population_metric_sum if is_need_to_show_store_and_pop_metric else population_metric_count
 
     # Створюємо список для зберігання результатів
     grid_population = []
@@ -86,7 +77,7 @@ def show_in_geomap(is_need_to_show_store_metric = False, best_location_coords = 
             }
         ).add_to(folium_map)
 
-    # Додаємо зірочку на карту
+    # Додаємо зірочку для найкращого місця на карту
     if best_location_coords:
         folium.Marker(
             location=[float(best_location_coords[0]), float(best_location_coords[1])],
@@ -103,7 +94,7 @@ def show_in_geomap(is_need_to_show_store_metric = False, best_location_coords = 
     for _, store in silpo_shops_data.iterrows():
         radius_if_need_to_show_store_metric = ((store['Metric Store'] - min_store_metric) / (
                 max_store_metric - min_store_metric)) * 10  # Діапазон від 10 до 30
-        prepared_radius = 10 if not is_need_to_show_store_metric else radius_if_need_to_show_store_metric
+        prepared_radius = 10 if not is_need_to_show_store_and_pop_metric else radius_if_need_to_show_store_metric
         folium.CircleMarker(
             location=[float(store['lat']), float(store['long'])],  # Конвертуємо в float
             radius=prepared_radius,  # Розмір маркера для магазинів "Сільпо"

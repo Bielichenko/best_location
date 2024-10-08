@@ -150,11 +150,10 @@ def get_prepared_coords(competitors_shops_prepared):
     return pops_coords, silpo_and_other_shops_coords
 
 # Основна функція для виклику з основного файлу проекту
-def find_best_locations(competitors_shops, is_need_to_add_competitors=True):
-    competitors_shops_prepared = competitors_shops if is_need_to_add_competitors else []
-
+def find_best_locations(competitors_shops):
+    print('Відбувається "расклад" Таро для пошуку найкращої локації, це може зайняти декілька хвилин...')
     # Завантаження і підготовка даних
-    pops_coords, silpo_and_other_shops_coords = get_prepared_coords(competitors_shops_prepared)
+    pops_coords, silpo_and_other_shops_coords = get_prepared_coords(competitors_shops)
 
     # Пошук оптимальних локацій
     best_locations = get_locations_with_best_score(pops_coords, silpo_and_other_shops_coords, alpha=1, step_size=0.001, max_workers=os.cpu_count())
@@ -164,5 +163,5 @@ def find_best_locations(competitors_shops, is_need_to_add_competitors=True):
     format_and_save_best_locations_to_excel(best_locations, output_path)
 
     # Найкраща локація буде відображена на гео мапі!
-    return best_locations[0]
+    return best_locations[0][1]
 

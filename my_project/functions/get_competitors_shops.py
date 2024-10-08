@@ -1,10 +1,11 @@
 import requests
 
+# Використовуємо публічну АПІ для отримання магазинів конкурентів
 def get_competitors_shops():
-    # Overpass API URL
+    # API URL
     overpass_url = "http://overpass-api.de/api/interpreter"
 
-    # Overpass query to get all grocery stores, supermarkets, convenience stores, and markets in Kyiv
+    # Запит на всі супермаркети Києва
     overpass_query = """
     [out:json];
     area[name="Київ"]->.kyiv;
@@ -15,23 +16,13 @@ def get_competitors_shops():
     out center;
     """
 
-    # node["shop"="grocery"](area.kyiv);
-    #   node["shop"="convenience"](area.kyiv);
-    #   node["shop"="farm"](area.kyiv);
-    #   node["shop"="greengrocer"](area.kyiv);
-    # node["shop"="grocery"](area.kyiv);
-    # way["shop"="grocery"](area.kyiv);
-    #   way["shop"="convenience"](area.kyiv);
-    #   way["shop"="farm"](area.kyiv);
-    #   way["shop"="greengrocer"](area.kyiv);
-
-    # Send the request to the Overpass API
+    # Кидаємо запит на АПІ
     response = requests.get(overpass_url, params={'data': overpass_query})
     data = response.json()
 
-    # Extract the relevant information (name, latitude, longitude)
+    # Витягуємо всю необхідну інфу про всі супермаркети окрім Сільпо
     competitors_stores = []
-    # print(data['elements'][1])
+
     for element in data['elements']:
         if 'tags' in element and ('lat' in element or 'center' in element):
             name = element['tags'].get('name', 'Unnamed')
@@ -43,12 +34,4 @@ def get_competitors_shops():
                 competitors_stores.append([name, lat, lon])
 
 
-    # print('all_stores', len(all_stores))
-
-    # Фільтруємо записи, де назва магазину не дорівнює "Сільпо"
-
-    # print('competitors_stores', len(competitors_stores))
-    # print(competitors_stores, 'competitors_stores')
-
     return competitors_stores
-# print(len(get_competitors_shops()))

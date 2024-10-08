@@ -90,17 +90,7 @@ def calc_correlations_and_pvalue_between_metrics(silpo_shops_data_with_areas_met
     return correlation_results
 
 def calc_correlations_with_areas_approach(competitors_shops, radius_km=1, n_sectors=4):
-    """
-    Обчислює кореляції між різними метриками, використовуючи підхід секторів.
-
-    Параметри:
-        radius_km (float): Радіус навколо кожного магазину в кілометрах.
-        n_sectors (int): Кількість секторів для поділу окружності навколо магазину.
-
-    Повертає:
-        silpo_shops_data (DataFrame): Оновлений DataFrame з доданими метриками.
-        correlation_results_df (DataFrame): DataFrame з обчисленими кореляціями та p-значеннями.
-    """
+    print('Підрахунок кореляції за допомогою "Секторального підходу" запущено!')
 
     # Перетворюємо список конкурентів на DataFrame, якщо це необхідно
     if isinstance(competitors_shops, list):
