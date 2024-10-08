@@ -1,7 +1,8 @@
+import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr
-import numpy as np
 from sklearn.neighbors import NearestNeighbors
+
 from my_project.global_data import populations_data, silpo_shops_data
 
 

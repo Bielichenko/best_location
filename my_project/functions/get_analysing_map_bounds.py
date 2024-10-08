@@ -1,8 +1,8 @@
 # Імпортуємо необхідні бібліотеки для роботи з файлами та візуалізації
 import geopandas as gpd
-from shapely.geometry import Point, box
-import pandas as pd
 import numpy as np
+import pandas as pd
+from shapely.geometry import Point, box
 
 
 def get_analysing_map_bounds(some_type_coords):

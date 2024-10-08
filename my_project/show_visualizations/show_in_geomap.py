@@ -1,17 +1,15 @@
-from my_project.global_data import (
-    silpo_shops_data,
-    populations_data,
-    all_population_data,
-)
+import tempfile
+import webbrowser
+
+import branca
 import folium
 import geopandas as gpd
 import numpy as np
-from shapely.geometry import box, Point
-from my_project.global_data import populations_data, all_population_data
+from shapely.geometry import Point, box
+
 from my_project.functions import get_analysing_map_bounds
-import webbrowser
-import tempfile
-import branca
+from my_project.global_data import (all_population_data, populations_data,
+                                    silpo_shops_data)
 
 
 def show_in_geomap(

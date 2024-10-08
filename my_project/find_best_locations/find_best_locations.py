@@ -1,17 +1,14 @@
-import pandas as pd
-import numpy as np
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
-from my_project.global_data import (
-    populations_data,
-    silpo_shops_data,
-    all_population_data,
-)
-from my_project.functions import (
-    calculate_pop_rel_weight_by_dist,
-    get_analysing_map_bounds,
-    get_formatted_number,
-)
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+import numpy as np
+import pandas as pd
+
+from my_project.functions import (calculate_pop_rel_weight_by_dist,
+                                  get_analysing_map_bounds,
+                                  get_formatted_number)
+from my_project.global_data import (all_population_data, populations_data,
+                                    silpo_shops_data)
 
 
 # Функція для збереження результатів у Excel
