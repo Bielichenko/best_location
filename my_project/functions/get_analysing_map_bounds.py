@@ -2,7 +2,7 @@
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-from shapely.geometry import Point, box
+from shapely.geometry import Point
 
 
 def get_analysing_map_bounds(some_type_coords):

@@ -1,21 +1,20 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="temabit_test",  # Назва вашого пакету
-    version="0.1.0",  # Версія
-    packages=find_packages(),  # Автоматично знаходить усі пакети
+    name="temabit_test",
+    version="1.0.0",
+    packages=find_packages(),
     install_requires=[
-        # Сюди можна додати зовнішні залежності, наприклад:
         "requests",
         "numpy",
     ],
     entry_points={
         "console_scripts": [
-            "activate=my_project.main:main",  # Команда 'start', яка викликає функцію main з файлу calc_correlations_with_areas_approach.py
+            "activate=my_project.main:main",
         ]
     },
     author="Ваше ім’я",
     author_email="your.email@example.com",
     description="Короткий опис вашого проекту",
-    url="https://github.com/yourusername/my_project",  # URL вашого проекту
+    url="https://github.com/yourusername/my_project",
 )

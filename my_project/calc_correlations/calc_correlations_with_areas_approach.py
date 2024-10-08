@@ -2,8 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr
 
-from my_project.functions import (calculate_azimuth, get_competitors_shops,
-                                  get_haversine_dist_in_km, get_sector)
+from my_project.functions import (calculate_azimuth, get_haversine_dist_in_km, get_sector)
 from my_project.global_data import populations_data, silpo_shops_data
 
 
