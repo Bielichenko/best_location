@@ -1,5 +1,4 @@
-from .calc_correlations import (calc_correlations_with_areas_approach,
-                                calc_correlations_with_binding_approach)
+from .calc_correlations import calc_correlations_with_areas_approach,calc_correlations_with_binding_approach
 from .find_best_locations import find_best_locations
 from .functions import get_competitors_shops
 from .show_visualizations import show_in_geomap, show_in_tableau
@@ -22,6 +21,7 @@ def main():
     best_location = find_best_locations(competitors_shops)
     show_in_geomap(False, best_location, competitors_shops)
     print("Геомапа з найкращою локацією візуалізована в твоєму браузері!")
+    # print("Повні результати досліджень можна подивитись в папці temabit_test\my_project\output_result_data")
 
     print("Всі етапи алгоритму пройдені! Дякую за увагу!")
 

@@ -31,7 +31,6 @@ def format_and_save_best_locations_to_excel(best_locations, output_path):
 
     print(
         "Ура! Файл з найкращими координатами для нових локацій успішно записано! "
-        r"Шлях: temabit_test\my_project\output_result_data\new_store_best_locations"
     )
 
 
