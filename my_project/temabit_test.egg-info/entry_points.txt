@@ -1,0 +1,2 @@
+[console_scripts]
+start = temabit_test.main:main
