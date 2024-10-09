@@ -1,7 +1,11 @@
-from .calc_correlations import calc_correlations_with_areas_approach,calc_correlations_with_binding_approach
+# from .calc_correlations import geomap_visualization, geomap_visualization_2
+from .calc_correlations import calc_correlations_with_binding_approach
+from .calc_correlations import calc_correlations_with_areas_approach
 from .find_best_locations import find_best_locations
-from .functions import get_competitors_shops
 from .show_visualizations import show_in_geomap, show_in_tableau
+from .functions import get_competitors_shops
+from .global_data import populations_data
+
 
 # Налаштування алгоритму (True/False)
 # Чи треба для деяких етапів підгружати супермаркети інших мереж?
@@ -16,15 +20,13 @@ def main():
     competitors_shops = get_competitors_shops() if is_need_to_add_competitors else []
     calc_correlations_with_areas_approach(competitors_shops)
     show_in_tableau()
-    print("Результати кореляції візуалізовані в твоєму браузері!")
+    print('Результати кореляції візуалізовані в твоєму браузері!')
 
     best_location = find_best_locations(competitors_shops)
     show_in_geomap(False, best_location, competitors_shops)
-    print("Геомапа з найкращою локацією візуалізована в твоєму браузері!")
-    # print("Повні результати досліджень можна подивитись в папці temabit_test\my_project\output_result_data")
+    print('Найкраща локація додана на гео мапу в твоєму браузері!')
 
     print("Всі етапи алгоритму пройдені! Дякую за увагу!")
-
 
 if __name__ == "__main__":
     main()

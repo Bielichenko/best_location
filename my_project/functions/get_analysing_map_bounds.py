@@ -8,12 +8,10 @@ from shapely.geometry import Point
 def get_analysing_map_bounds(some_type_coords):
     if isinstance(some_type_coords, pd.DataFrame):
         # Створюємо геометричні об'єкти для популяцій
-        some_type_coords["geometry"] = some_type_coords.apply(
-            lambda row: Point(row["lon"], row["lat"]), axis=1
-        )
+        some_type_coords['geometry'] = some_type_coords.apply(lambda row: Point(row['lon'], row['lat']), axis=1)
 
         # Перетворимо DataFrame на GeoDataFrame для візуалізації на карті
-        gdf_population = gpd.GeoDataFrame(some_type_coords, geometry="geometry")
+        gdf_population = gpd.GeoDataFrame(some_type_coords, geometry='geometry')
 
         return gdf_population.total_bounds
 
