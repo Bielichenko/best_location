@@ -24,7 +24,9 @@ def main():
 
     best_location = find_best_locations(competitors_shops)
     show_in_geomap(False, best_location, competitors_shops)
+
     print('Найкраща локація додана на гео мапу в твоєму браузері!')
+    print(r'Результати розрахунків записані в папку. Шлях: temabit_test\my_project\output_result_data')
 
     print("Всі етапи алгоритму пройдені! Дякую за увагу!")
 

@@ -4,6 +4,7 @@ from scipy.stats import pearsonr
 from sklearn.neighbors import NearestNeighbors
 
 from my_project.global_data import populations_data, silpo_shops_data
+from my_project.functions import check_is_df_empty
 
 
 # Оптимізована функція для прив'язки популяцій до найближчого магазину
@@ -57,6 +58,9 @@ def calculate_corr_and_pvalue(x, y):
 
 # Основна функція для обчислення всіх кореляцій та метрик
 def calc_correlations_with_binding_approach():
+    if check_is_df_empty(silpo_shops_data, "Підрахунок кореляції"):
+        return
+
     print("Підрахунок кореляції за допомогою \"Прив'язочного підходу\" запущено!")
 
     output_dir = './my_project/output_result_data/calc_correlations_result_data'

@@ -78,7 +78,7 @@ def calc_correlations_and_pvalue_between_metrics(silpo_shops_data_with_areas_met
     for i, col1 in enumerate(analysed_metrics_columns):
         for col2 in analysed_metrics_columns[i + 1:]:
             valid_data = silpo_shops_data_with_areas_metrics[[col1, col2]].dropna()
-            if len(valid_data) > 2:
+            if valid_data[col1].nunique() > 1 and valid_data[col2].nunique() > 1:
                 corr, p_value = pearsonr(valid_data[col1], valid_data[col2])
                 correlation_results.append({
                     'Metric 1': col1,
@@ -86,8 +86,9 @@ def calc_correlations_and_pvalue_between_metrics(silpo_shops_data_with_areas_met
                     'Correlation': corr,
                     'P-value': p_value
                 })
-
-    return correlation_results
+            else:
+                print(
+                    f"Недостатньо даних для обчислення кореляції між деякими метриками. Це не має вплинути на інші результати в звіті.")
 
 def calc_correlations_with_areas_approach(competitors_shops, radius_km=1, n_sectors=4):
     print('Підрахунок кореляції за допомогою "Секторального підходу" запущено!')
