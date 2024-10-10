@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr
-from my_project.functions import get_competitors_shops, get_haversine_dist_in_km, calculate_azimuth, get_sector
+from my_project.functions import get_haversine_dist_in_km, calculate_azimuth, get_sector
 from my_project.global_data import silpo_shops_data, populations_data
-import os
 
 
 def get_dists_from_curr_silpo_shop_to_other_objs(curr_silpo_shop_lon, curr_silpo_shop_lat, other_objs_coords):

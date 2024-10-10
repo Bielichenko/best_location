@@ -36,4 +36,4 @@ def get_competitors_shops():
     # Тут можна налаштувати фейкові магазини конкурентих мереж для тестування функціоналу. Формат: [name, lat, lon]
     mock_compatitors_shops = [['mock_shop_1', 50.50, 30.55]]
 
-    return mock_compatitors_shops
+    return competitors_stores

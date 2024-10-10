@@ -1,10 +1,8 @@
-# from .calc_correlations import geomap_visualization, geomap_visualization_2
 from .calc_correlations import calc_correlations_with_binding_approach
 from .calc_correlations import calc_correlations_with_areas_approach
 from .find_best_locations import find_best_locations
 from .show_visualizations import show_in_geomap, show_in_tableau
 from .functions import get_competitors_shops
-from .global_data import populations_data
 
 
 # Налаштування алгоритму (True/False)
@@ -24,7 +22,6 @@ def main():
 
     best_location = find_best_locations(competitors_shops)
     show_in_geomap(False, best_location, competitors_shops)
-
     print('Найкраща локація додана на гео мапу в твоєму браузері!')
     print(r'Результати розрахунків записані в папку. Шлях: temabit_test\my_project\output_result_data')
 

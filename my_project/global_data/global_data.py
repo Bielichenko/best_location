@@ -1,7 +1,8 @@
 import pandas as pd
 
-# Можна змінити набір даних для розрахунку кореляцій та найкращої точки в залежнсті від переданих даних
-file_path = "data_sets/final_corr_research_alg_check.xlsx"
+# Можна змінити набір даних для розрахунку кореляцій та найкращої точки в залежнсті від переданих даних.
+# (Test.xlsx - для аналізу реальних даних)
+file_path = "data_sets/Test.xlsx"
 populations_data = pd.read_excel(file_path, sheet_name='Population')
 silpo_shops_data = pd.read_excel(file_path, sheet_name='Stores')
 
