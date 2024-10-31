@@ -24,7 +24,7 @@ https://docs.google.com/document/d/1Zx49fugQ5H_ajlC0bGxAO5gLvbvP0YsN6K7DdE1ibLQ/
 
 ## Для встановлення проекту необхідно в терміналі прописати:
 
-1. git clone https://github.com/Bielichenko/temabit_test.git
+1. git clone https://github.com/Bielichenko/best_location
 2. pip install -r requirements.txt
 3. activate
 
